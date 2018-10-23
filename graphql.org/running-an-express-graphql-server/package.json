@@ -1,0 +1,11 @@
+{
+  "name": "running-an-express-graphql-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.16.4",
+    "express-graphql": "^0.6.12",
+    "graphql": "^14.0.2"
+  }
+}
