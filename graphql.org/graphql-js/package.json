@@ -1,0 +1,9 @@
+{
+  "name": "graphql-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "graphql": "^14.0.2"
+  }
+}
