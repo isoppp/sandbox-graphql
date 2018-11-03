@@ -9,8 +9,16 @@ const typeDefs = `
 schema {
   query: Query
 }
+# root query for out __Hello World Server__
 type Query {
+  # say hello *world*
   hello: String
+  """
+  About names: 
+  
+  1. Naming is [hard](https://bit.ly/2m5uhil)
+  1. Everyone messes them up
+  """
   name: String
 }
 `;
