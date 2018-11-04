@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import { makeExecutableSchema } from 'graphql-tools'
 import typeDefs from './typedefs'
 import resolvers from './resolvers'
-import {findAuthorsByBookIdsLoader} from './author';
+import loaders from './loaders'
 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
 
@@ -18,9 +18,7 @@ app.use('/graphql',
   graphqlExpress(() => ({
     schema,
     context: {
-      loaders: {
-        findAuthorsByBookIdsLoader: findAuthorsByBookIdsLoader()
-      }
+      loaders: loaders()
     }
   }))
 )
