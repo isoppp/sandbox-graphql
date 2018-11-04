@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import { makeExecutableSchema } from 'graphql-tools'
 import typeDefs from './typedefs'
 import resolvers from './resolvers'
+import {findAuthorsByBookIdsLoader} from './author';
 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
 
@@ -12,7 +13,17 @@ const app = express()
 
 app.use(cors())
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }))
+app.use('/graphql',
+  bodyParser.json(),
+  graphqlExpress(() => ({
+    schema,
+    context: {
+      loaders: {
+        findAuthorsByBookIdsLoader: findAuthorsByBookIdsLoader()
+      }
+    }
+  }))
+)
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
