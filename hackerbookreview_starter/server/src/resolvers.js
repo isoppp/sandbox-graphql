@@ -1,4 +1,5 @@
 import { allBooks, imageUrl } from './book'
+import { allReviews } from './review'
 
 export default {
   Book: {
@@ -11,5 +12,6 @@ export default {
   },
   Query: {
     books: () => allBooks(),
+    reviews: () => allReviews(),
   },
 }
