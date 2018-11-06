@@ -11,7 +11,11 @@ export default {
     },
   },
   Review: {
-    book: review => findBookById(review.bookId),
+    book: (review, args, context) => {
+      const { loaders } = context
+      const { findBooksByIdsLoader } = loaders
+      return findBooksByIdsLoader.load(review.bookId)
+    },
   },
   Query: {
     books: () => allBooks(),
