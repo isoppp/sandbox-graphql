@@ -1,4 +1,4 @@
-import { allBooks, imageUrl } from './book'
+import { allBooks, imageUrl, findBookById } from './book'
 import { allReviews } from './review'
 
 export default {
@@ -9,6 +9,9 @@ export default {
       const { findAuthorsByBookIdsLoader } = loaders
       return findAuthorsByBookIdsLoader.load(book.id)
     },
+  },
+  Review: {
+    book: review => findBookById(review.bookId),
   },
   Query: {
     books: () => allBooks(),
