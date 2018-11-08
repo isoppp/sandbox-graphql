@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import * as R from "ramda";
-import { BookListSection, SORT_BY } from "./components/Book";
-import Error from "./components/Error";
-import { RecentReviewSection } from "./components/Review";
-import data from "./data/";
+import React, { Component } from 'react';
+import * as R from 'ramda';
+import { BookListSection, SORT_BY } from './components/Book';
+import Error from './components/Error';
+import { RecentReviewSection } from './components/Review';
+import data from './data/';
 
 class Home extends Component {
   state = {
@@ -11,9 +11,9 @@ class Home extends Component {
     reviews: [],
     orderBy: R.pipe(
       R.keys,
-      R.head
+      R.head,
     )(SORT_BY),
-    errors: []
+    errors: [],
   };
   componentDidMount() {
     this.loadData();
@@ -29,7 +29,7 @@ class Home extends Component {
       this.setState({
         books,
         reviews,
-        errors
+        errors,
       });
     } catch (err) {
       this.setState({ errors: [err.message] });
