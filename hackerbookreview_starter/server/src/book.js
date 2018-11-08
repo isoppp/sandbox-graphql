@@ -2,7 +2,7 @@ import query from './db'
 import { groupBy, map } from 'ramda'
 import DataLoader from 'dataloader';
 
-async function findBooksIds(ids) {
+async function findBooksIds (ids) {
   const sql = `
   select *
   from hb.book
@@ -29,7 +29,7 @@ export function findBooksByIdsLoader () {
 
 }
 
-export async function findBookById(id) {
+export async function findBookById (id) {
   const sql = `
   select *
   from hb.book
@@ -47,10 +47,17 @@ export async function findBookById(id) {
   }
 }
 
-export const allBooks = async () => {
+const ORDER_BY = {
+  RATING_DESC: 'id desc',
+  ID_DESC: 'rating desc',
+}
+
+export const allBooks = async (args) => {
+  const orderBy = ORDER_BY[args.orderBy]
   const sql = `
-  select * from hb.book;
-`
+  select * from hb.book
+  order by ${orderBy};
+  `
 
   try {
     const result = await query(sql)

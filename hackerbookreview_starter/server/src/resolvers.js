@@ -23,7 +23,9 @@ export default {
     },
   },
   Query: {
-    books: () => allBooks(),
+    books: (root, args) => {
+      return allBooks(args)
+    },
     reviews: () => allReviews(),
   },
 }
