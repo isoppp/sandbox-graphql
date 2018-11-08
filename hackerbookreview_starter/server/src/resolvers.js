@@ -26,6 +26,8 @@ export default {
     books: (root, args) => {
       return allBooks(args)
     },
-    reviews: () => allReviews(),
+    reviews: (root, args) => {
+      return allReviews(args)
+    }
   },
 }
