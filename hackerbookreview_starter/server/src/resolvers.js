@@ -1,4 +1,4 @@
-import { allBooks, imageUrl, findBookById } from './book'
+import { allBooks, imageUrl } from './book'
 import { allReviews } from './review'
 
 export default {
@@ -23,14 +23,16 @@ export default {
     },
   },
   Query: {
-    book: (root, args) => {
-      return findBookById(args)
-    },
     books: (root, args) => {
       return allBooks(args)
     },
     reviews: (root, args) => {
       return allReviews(args)
-    }
+    },
+    book: (root, args, context) => {
+      const { loaders } = context
+      const { findBooksByIdsLoader } = loaders
+      return findBooksByIdsLoader.load(args.id)
+    },
   },
 }
