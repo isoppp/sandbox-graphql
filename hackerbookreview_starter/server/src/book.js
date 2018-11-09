@@ -29,14 +29,14 @@ export function findBooksByIdsLoader () {
 
 }
 
-export async function findBookById (id) {
+export async function findBookById (args) {
   const sql = `
   select *
   from hb.book
   where hb.book.id = $1;
   `
 
-  const params = [id]
+  const params = [parseInt(args.id, 10)]
 
   try {
     const result = await query(sql, params)

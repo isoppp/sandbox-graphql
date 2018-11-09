@@ -1,4 +1,4 @@
-import { allBooks, imageUrl } from './book'
+import { allBooks, imageUrl, findBookById } from './book'
 import { allReviews } from './review'
 
 export default {
@@ -23,6 +23,9 @@ export default {
     },
   },
   Query: {
+    book: (root, args) => {
+      return findBookById(args)
+    },
     books: (root, args) => {
       return allBooks(args)
     },
