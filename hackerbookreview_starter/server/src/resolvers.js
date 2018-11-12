@@ -1,7 +1,11 @@
+import gravatar from 'gravatar'
 import { allBooks, imageUrl } from './book'
 import { allReviews } from './review'
 
 export default {
+  User: {
+    imageUrl: (user, args) => gravatar.url(user.email, { s: args.size })
+  },
   Book: {
     imageUrl: (book, { size }) => imageUrl(size, book.googleId),
     authors: (book, args, context) => {
