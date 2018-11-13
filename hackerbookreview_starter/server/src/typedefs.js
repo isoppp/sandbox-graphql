@@ -1,12 +1,26 @@
 const typeDefs = `
 schema {
   query: Query
+  mutation: Mutation
 }
 
 type Query {
   books(orderBy: BooksOrderBy = RATING_DESC): [Book]
   reviews(orderBy: ReviewOrderBy = ID_ASC): [Review]
   book(id: ID!): Book
+}
+
+type Mutation {
+  createReview(reviewInput: ReviewInput!): Review
+}
+
+input ReviewInput {
+  bookId: ID!
+  rating: Int!
+  name: String!
+  email: String!
+  title: String
+  comment: String
 }
 
 enum BooksOrderBy {
