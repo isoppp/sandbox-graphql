@@ -9,6 +9,13 @@ import fetch from './fetch'
 
 const findBookById = (id, books) => R.find(R.propEq('id', id), books);
 
+const createReviewMustation = `
+mutation CreateReview($reviewInput:ReviewInput!) {
+  createReview(reviewInput:$reviewInput){
+    id
+  }
+}
+`
 const isInputValid = reviewInput => {
   const { count, name, email } = reviewInput;
   return count > 0 && count < 6 && name && EmailValidator.validate(email);
@@ -69,14 +76,27 @@ class BookReview extends Component {
   });
   handleSubmit = async e => {
     e.preventDefault();
-    // eslint-disable-next-line
     const { book, reviewInput } = this.state;
-    // eslint-disable-next-line
     const { name, count, email, title, comment } = reviewInput;
-    // TODO: add actual mutation to add new review
     try {
-      const errors = [];
-      this.setState({ redirect: true, errors });
+      const variables = {
+        reviewInput: {
+          bookId: book.id,
+          rating: count,
+          name,
+          email,
+          title,
+          comment,
+        }
+      }
+
+      const result = await fetch({ query: createReviewMustation, variables })
+      const id = R.path(['data', 'createReview', 'id'], result)
+      const errorList = R.pathOr([], ['errors'], result)
+      const errors = R.map(error => error.message, errorList)
+      const redirect = !!id
+
+      this.setState({ redirect, errors });
     } catch (err) {}
   };
   render() {
