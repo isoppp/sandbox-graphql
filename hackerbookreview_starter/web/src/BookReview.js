@@ -5,6 +5,7 @@ import * as EmailValidator from 'email-validator';
 import { Book, BookReviewForm } from './components/Book';
 import Error from './components/Error';
 import data from './data';
+import fetch from './fetch'
 
 const findBookById = (id, books) => R.find(R.propEq('id', id), books);
 
@@ -12,6 +13,25 @@ const isInputValid = reviewInput => {
   const { count, name, email } = reviewInput;
   return count > 0 && count < 6 && name && EmailValidator.validate(email);
 };
+
+const query = `
+fragment Book on Book {
+  id
+  title
+  description
+  imageUrl
+  rating
+}
+
+query BookReview ($id:ID!) {
+  book(id: $id) {
+    ...Book
+    authors {
+      name
+    }
+  }
+}
+`
 
 class BookReview extends Component {
   state = {
@@ -31,9 +51,11 @@ class BookReview extends Component {
   async componentDidMount() {
     const id = R.path(['props', 'match', 'params', 'id'], this);
     try {
-      // TODO: fetch actual book using graphql
-      const book = findBookById(id, data.books);
-      const errors = [];
+      const variables = { id }
+      const result = await fetch({ query, variables })
+      const book = R.path(['data', 'book'], result)
+      const errorList = R.pathOr([], ['errors'], result)
+      const errors = R.map(error => error.message, errorList)
       this.setState({ book, errors });
     } catch (err) {
       this.setState({ errors: [err.message] });
