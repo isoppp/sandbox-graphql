@@ -1,10 +1,13 @@
 import gravatar from 'gravatar'
-import { allBooks, imageUrl } from './book'
+import { allBooks, imageUrl, searchBook } from './book'
 import { allReviews, createReview } from './review'
 
 export default {
   User: {
     imageUrl: (user, args) => gravatar.url(user.email, { s: args.size })
+  },
+  SearchBookResult: {
+    imageUrl: (result, args) => imageUrl(args.size, result.id)
   },
   Book: {
     imageUrl: (book, { size }) => imageUrl(size, book.googleId),
@@ -42,6 +45,10 @@ export default {
       const { loaders } = context
       const { findBooksByIdsLoader } = loaders
       return findBooksByIdsLoader.load(args.id)
+    },
+    searchBook: (root, args) => {
+      const { query } = args
+      return searchBook(query)
     },
   },
   Mutation: {

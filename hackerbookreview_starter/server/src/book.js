@@ -1,6 +1,21 @@
 import query from './db'
-import { groupBy, map } from 'ramda'
+import { groupBy, map, pathOr } from 'ramda'
 import DataLoader from 'dataloader';
+import axios from 'axios'
+
+export async function searchBook(query) {
+  const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`
+
+  try {
+    const result = await axios(url)
+    const items = pathOr([], ['data', 'items'], result)
+    const books = map(book => ({ id: book.id, ...book.volumeInfo }), items)
+    return books
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
 
 async function findBooksIds (ids) {
   const sql = `
@@ -26,7 +41,6 @@ async function findBooksIds (ids) {
 
 export function findBooksByIdsLoader () {
   return new DataLoader(findBooksIds)
-
 }
 
 export async function findBookById (id) {

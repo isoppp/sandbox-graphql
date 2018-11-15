@@ -8,6 +8,15 @@ type Query {
   books(orderBy: BooksOrderBy = RATING_DESC): [Book]
   reviews(orderBy: ReviewOrderBy = ID_ASC): [Review]
   book(id: ID!): Book
+  searchBook(query: String!): [SearchBookResult]
+}
+
+type SearchBookResult {
+  id: ID!
+  title: String
+  description: String
+  authors: [String]
+  imageUrl(size: ImageSize = LARGE): String
 }
 
 type Mutation {
