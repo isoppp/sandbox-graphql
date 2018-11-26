@@ -1,9 +1,10 @@
 import query from './db'
 import { groupBy, map, pathOr } from 'ramda'
 import DataLoader from 'dataloader';
+import stripTags from 'striptags'
 import axios from 'axios'
 
-export async function searchBook(query) {
+export async function searchBook (query) {
   const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`
 
   try {
@@ -85,4 +86,47 @@ export const allBooks = async (args) => {
 export const imageUrl = (size, id) => {
   const zoom = size === 'SMALL' ? 1 : 0
   return `http://books.google.com/books/content?id=${id}&printsec=frontcover&img=1&zoom=${zoom}&source=gbs_api`
+}
+
+export async function createBook (googleBookId) {
+  try {
+    const book = await findBookByGoogleId(googleBookId)
+    const {
+      title = '',
+      subtitle = '',
+      description = '',
+      authors = '',
+      pageCount = '',
+    } = book
+    const sql = `
+    select * from hb.create_book($1, $2, $3, $4, $5, $6);
+    `
+    const params = [
+      googleBookId,
+      stripTags(title),
+      stripTags(subtitle),
+      stripTags(description),
+      authors,
+      pageCount,
+    ]
+
+    const result = await query(sql, params)
+    return result.rows[0]
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+async function findBookByGoogleId (googleBookId) {
+  const url = `https://www.googleapis.com/books/v1/volumes/${googleBookId}`
+
+  try {
+    const result = await axios(url)
+    const book = pathOr({}, ['data'], result)
+    return { ...book, ...book.volumeInfo }
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
 }
