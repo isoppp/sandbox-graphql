@@ -9,6 +9,7 @@ type Query {
   reviews(orderBy: ReviewOrderBy = ID_ASC): [Review]
   book(id: ID!): Book
   searchBook(query: String!): [SearchBookResult]
+  search(query: String!): [SearchResult]
 }
 
 type SearchBookResult {
@@ -18,6 +19,8 @@ type SearchBookResult {
   authors: [String]
   imageUrl(size: ImageSize = LARGE): String
 }
+
+union SearchResult = Book | Review | Author | User
 
 type Mutation {
   createReview(reviewInput: ReviewInput!): Review

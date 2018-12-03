@@ -6,6 +6,7 @@ import {
   createBook,
 } from './book'
 import { allReviews, createReview } from './review'
+import { search } from './search'
 
 export default {
   User: {
@@ -55,6 +56,10 @@ export default {
       const { query } = args
       return searchBook(query)
     },
+    search: (root, args) => {
+      const { query } = args
+      return search(query)
+    }
   },
   Mutation: {
     createReview: (root, args) => {
