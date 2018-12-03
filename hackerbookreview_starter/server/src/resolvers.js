@@ -12,6 +12,9 @@ export default {
   User: {
     imageUrl: (user, args) => gravatar.url(user.email, { s: args.size })
   },
+  SearchResult: {
+    __resolveType: obj => obj.__type,
+  },
   SearchBookResult: {
     imageUrl: (result, args) => imageUrl(args.size, result.id)
   },

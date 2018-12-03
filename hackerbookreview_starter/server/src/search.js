@@ -1,3 +1,4 @@
+import {map} from 'ramda'
 import query from './db'
 
 export async function search (term) {
@@ -14,7 +15,7 @@ async function searchBooks(term) {
   try {
     const params = [term]
     const result = await query(sql, params)
-    return result.rows
+    return map(obj => ({ ...obj, __type: 'Book' }), result.rows)
   } catch(err) {
     console.log(err)
     throw err
