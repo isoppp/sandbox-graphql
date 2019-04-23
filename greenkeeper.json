@@ -1,0 +1,13 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "graphql.org/graphql-js/package.json",
+        "graphql.org/others/package.json",
+        "graphql.org/running-an-express-graphql-server/package.json",
+        "hackerbookreview_starter/server/package.json",
+        "hackerbookreview_starter/web/package.json"
+      ]
+    }
+  }
+}
