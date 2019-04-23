@@ -5,7 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "express": "^4.16.4",
-    "express-graphql": "^0.6.12",
+    "express-graphql": "^0.8.0",
     "graphql": "^14.0.2"
   }
 }
